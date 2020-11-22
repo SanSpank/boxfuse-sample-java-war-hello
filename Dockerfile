@@ -1,4 +1,8 @@
-FROM maven:3.5.2-jdk-8 AS build
-COPY src /usr/src/app/src
-COPY pom.xml /usr/src/app
-RUN mvn -f /usr/src/app/pom.xml clean package
+FROM maven:3.6.1-jdk-8 as maven_builder
+WORKDIR /app
+ADD pom.xml .
+RUN mvn clean package
+RUN ls -1 /app/target/
+
+FROM tomcat:8.5.43-jdk8
+COPY --from=maven_builder /app/target/hello-1.0.war /usr/local/tomcat/webapps
