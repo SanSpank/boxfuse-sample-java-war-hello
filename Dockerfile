@@ -1,5 +1,6 @@
 FROM maven:3.6.1-jdk-8 as maven_builder
 WORKDIR /app
+COPY ./ .
 ADD pom.xml .
 RUN mvn clean package
 RUN ls -1 /app/target/
